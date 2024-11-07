@@ -1,0 +1,90 @@
+2024-11-07 01:23:12,923 - ERROR - Application crashed
+Traceback (most recent call last):
+  File "C:\Users\NN\OneDrive\桌面\epoly\main.py", line 19, in main
+    create_gui(root)  # 創建 GUI 界面
+    ^^^^^^^^^^^^^^^^
+  File "C:\Users\NN\OneDrive\桌面\epoly\gui.py", line 25, in create_gui
+    employee_sheet.bind("<EndEditCell>", on_employee_edit)
+  File "C:\Users\NN\AppData\Roaming\Python\Python312\site-packages\tksheet\sheet.py", line 983, in bind
+    self.MT.bind(binding, func, add=add)
+  File "C:\Python312\Lib\tkinter\__init__.py", line 1451, in bind
+    return self._bind(('bind', self._w), sequence, func, add)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python312\Lib\tkinter\__init__.py", line 1405, in _bind
+    self.tk.call(what + (sequence, cmd))
+_tkinter.TclError: bad event type or keysym "EndEditCell"
+2024-11-07 01:24:31,020 - ERROR - Application crashed
+Traceback (most recent call last):
+  File "C:\Users\NN\OneDrive\桌面\epoly\main.py", line 19, in main
+    create_gui(root)  # 創建 GUI 界面
+    ^^^^^^^^^^^^^^^^
+  File "C:\Users\NN\OneDrive\桌面\epoly\gui.py", line 25, in create_gui
+    employee_sheet.bind("<EndEditCell>", on_employee_edit)
+  File "C:\Users\NN\AppData\Roaming\Python\Python312\site-packages\tksheet\sheet.py", line 983, in bind
+    self.MT.bind(binding, func, add=add)
+  File "C:\Python312\Lib\tkinter\__init__.py", line 1451, in bind
+    return self._bind(('bind', self._w), sequence, func, add)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python312\Lib\tkinter\__init__.py", line 1405, in _bind
+    self.tk.call(what + (sequence, cmd))
+_tkinter.TclError: bad event type or keysym "EndEditCell"
+2024-11-07 02:17:06,168 - ERROR - Application crashed
+Traceback (most recent call last):
+  File "C:\Users\NN\OneDrive\桌面\epoly\main.py", line 19, in main
+    create_gui(root)  # 創建 GUI 界面
+    ^^^^^^^^^^^^^^^^
+  File "C:\Users\NN\OneDrive\桌面\epoly\gui.py", line 25, in create_gui
+    employee_sheet.bind("<CellEdited>", on_employee_edit)
+  File "C:\Users\NN\AppData\Roaming\Python\Python312\site-packages\tksheet\sheet.py", line 983, in bind
+    self.MT.bind(binding, func, add=add)
+  File "C:\Python312\Lib\tkinter\__init__.py", line 1451, in bind
+    return self._bind(('bind', self._w), sequence, func, add)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python312\Lib\tkinter\__init__.py", line 1405, in _bind
+    self.tk.call(what + (sequence, cmd))
+_tkinter.TclError: bad event type or keysym "CellEdited"
+2024-11-07 02:17:09,782 - ERROR - Application crashed
+Traceback (most recent call last):
+  File "C:\Users\NN\OneDrive\桌面\epoly\main.py", line 19, in main
+    create_gui(root)  # 創建 GUI 界面
+    ^^^^^^^^^^^^^^^^
+  File "C:\Users\NN\OneDrive\桌面\epoly\gui.py", line 25, in create_gui
+    employee_sheet.bind("<CellEdited>", on_employee_edit)
+  File "C:\Users\NN\AppData\Roaming\Python\Python312\site-packages\tksheet\sheet.py", line 983, in bind
+    self.MT.bind(binding, func, add=add)
+  File "C:\Python312\Lib\tkinter\__init__.py", line 1451, in bind
+    return self._bind(('bind', self._w), sequence, func, add)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python312\Lib\tkinter\__init__.py", line 1405, in _bind
+    self.tk.call(what + (sequence, cmd))
+_tkinter.TclError: bad event type or keysym "CellEdited"
+2024-11-07 02:18:01,267 - ERROR - Application crashed
+Traceback (most recent call last):
+  File "C:\Users\NN\OneDrive\桌面\epoly\main.py", line 19, in main
+    create_gui(root)  # 創建 GUI 界面
+    ^^^^^^^^^^^^^^^^
+  File "C:\Users\NN\OneDrive\桌面\epoly\gui.py", line 25, in create_gui
+    employee_sheet.bind("<CellEdited>", on_employee_edit)
+  File "C:\Users\NN\AppData\Roaming\Python\Python312\site-packages\tksheet\sheet.py", line 983, in bind
+    self.MT.bind(binding, func, add=add)
+  File "C:\Python312\Lib\tkinter\__init__.py", line 1451, in bind
+    return self._bind(('bind', self._w), sequence, func, add)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python312\Lib\tkinter\__init__.py", line 1405, in _bind
+    self.tk.call(what + (sequence, cmd))
+_tkinter.TclError: bad event type or keysym "CellEdited"
+2024-11-07 02:30:35,904 - ERROR - Application crashed
+Traceback (most recent call last):
+  File "C:\Users\NN\OneDrive\桌面\epoly\main.py", line 19, in main
+    create_gui(root)  # 創建 GUI 界面
+    ^^^^^^^^^^^^^^^^
+  File "C:\Users\NN\OneDrive\桌面\epoly\gui.py", line 25, in create_gui
+    employee_sheet.bind("<TabOut>", on_employee_edit)
+  File "C:\Users\NN\AppData\Roaming\Python\Python312\site-packages\tksheet\sheet.py", line 983, in bind
+    self.MT.bind(binding, func, add=add)
+  File "C:\Python312\Lib\tkinter\__init__.py", line 1451, in bind
+    return self._bind(('bind', self._w), sequence, func, add)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python312\Lib\tkinter\__init__.py", line 1405, in _bind
+    self.tk.call(what + (sequence, cmd))
+_tkinter.TclError: bad event type or keysym "TabOut"
