@@ -118,3 +118,20 @@ def update_employee(employee):
         logging.error(f"Database error while updating employee {employee['ID']}: {e}")
     finally:
         conn.close()
+def update_attendance_record(attendance):
+    try:
+        conn = connect_db()
+        cursor = conn.cursor()
+        cursor.execute('''
+            UPDATE attendance_records 
+            SET 打卡時間 = ?, 加班 = ?, 狀態 = ?, 請假小時 = ? 
+            WHERE employee_id = ? AND 日期 = ?
+        ''', (attendance['打卡時間'], attendance['加班'],
+              attendance['狀態'], attendance['請假小時'],
+              attendance['employee_id'], attendance['日期']))
+        conn.commit()
+        logging.info(f"Updated attendance for employee: {attendance['employee_id']} on {attendance['日期']}")
+    except sqlite3.Error as e:
+        logging.error(f"Database error while updating attendance for {attendance['employee_id']}: {e}")
+    finally:
+        conn.close()
