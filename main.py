@@ -1,14 +1,16 @@
 import sys
 import logging
-import traceback
 from PyQt5.QtWidgets import QApplication, QMainWindow, QMessageBox, QVBoxLayout, QLabel, QWidget
 from PyQt5.QtCore import Qt
 from gui import create_gui
 from database import create_tables
 
+main_window = None
+
+# 設定日誌紀錄
 logging.basicConfig(
     filename='app.log',  # 日誌文件名
-    level=logging.ERROR,  # 設定日誌級別為 ERROR，這樣只記錄錯誤
+    level=logging.ERROR,  # 設定日誌級別為 ERROR
     format='%(asctime)s - %(levelname)s - %(message)s'  # 日誌格式
 )
 
@@ -18,7 +20,7 @@ class MainWindow(QMainWindow):
         self.setWindowTitle("Employee Attendance Management")
         self.resize(1200, 600)  # 增大窗口以顯示兩個表格
         
-        # 创建一个中心窗口
+        # 創建中心窗口
         central_widget = QWidget()
         self.setCentralWidget(central_widget)
         layout = QVBoxLayout(central_widget)
@@ -31,21 +33,33 @@ class MainWindow(QMainWindow):
 
         create_gui(self)
 
+    def show_success_and_cleanup(self):
+        """顯示成功消息並清理。"""
+        QMessageBox.information(self, "成功", "資料已成功從 JSON 加載！")
+        load_initial_data()  # 重新加載資料以刷新表格
+
+    def show_error_and_cleanup(self, error_message):
+        """顯示錯誤消息。"""
+        QMessageBox.critical(self, "錯誤", error_message)
+
     def show_error(self, message):
         """在 GUI 中顯示錯誤信息"""
         self.error_label.setText(message)
 
+    def keyPressEvent(self, event):
+        """處理鍵盤事件，按下 Command + W 時關閉應用。"""
+        if event.key() == Qt.Key_W and event.modifiers() == Qt.MetaModifier:  # Qt.MetaModifier 是 Command 鍵
+            self.close()  # 關閉窗口
+        else:
+            super().keyPressEvent(event)  # 處理其他按鍵事件
+
 def main():
+    global main_window
     try:
         create_tables()
         app = QApplication(sys.argv)
         main_window = MainWindow()
         main_window.show()
-
-        # 這裡應該是您用來處理 JSON 數據的代碼
-        # 例如，您可能會有讀取文件和解析 JSON 的代碼
-        # 如果發生異常，可以使用下面的方式來顯示錯誤信息
-        # main_window.show_error("An error occurred while processing the data.")
 
         sys.exit(app.exec_())
     except Exception as e:

@@ -8,6 +8,7 @@ from PyQt5.QtWidgets import (
 from PyQt5.QtCore import Qt  # 確保導入 Qt 以使用對齊選項
 from database import fetch_employees, fetch_attendance, update_employee
 from json_parser import parse_json  # 引入 JSON 解析功能
+from PyQt5.QtCore import QMetaObject
 
 
 def create_gui(main_window):
@@ -16,7 +17,7 @@ def create_gui(main_window):
     layout = QVBoxLayout(central_widget)
 
     load_button = QPushButton("Load JSON File")
-    load_button.clicked.connect(load_json_file)
+    load_button.clicked.connect(lambda: load_json_file(main_window))  # Pass main_window
     layout.addWidget(load_button)
 
     # 添加姓名篩選和月份篩選的佈局
@@ -72,21 +73,26 @@ def create_gui(main_window):
 
 
 def load_initial_data():
+    # Fetch employees from the database
     employees = fetch_employees()
     if employees:
-        employee_table.setRowCount(len(employees))
+        employee_table.setRowCount(len(employees))  # Ensure the table has the correct number of rows
         for row_idx, row in enumerate(employees):
             for col_idx, item in enumerate(row):
                 employee_table.setItem(row_idx, col_idx, QTableWidgetItem(str(item)))
 
-        # 更新姓名下拉選單
+        # Update name combobox
         global name_combobox
-        name_combobox.addItems([employee[1] for employee in employees])  # 添加所有員工的姓名到下拉選單
+        name_combobox.clear()  # Clear existing items
+        name_combobox.addItem("所有")  # Add "All" option
+        name_combobox.addItems([employee[1] for employee in employees])  # Add employees' names
         
-    # 一開始不過濾月份，顯示所有考勤記錄
+    # Fetch and display attendance records
     attendance_records = fetch_attendance()
     if attendance_records:
         display_attendance_records(attendance_records)
+    else:
+        attendance_table.setRowCount(0)  # Clear the attendance table if no records are found
 
 
 def display_attendance_records(records):
@@ -96,7 +102,7 @@ def display_attendance_records(records):
             attendance_table.setItem(row_idx, col_idx, QTableWidgetItem(str(item)))
 
 
-def load_json_file():
+def load_json_file(main_window):
     file_path, _ = QFileDialog.getOpenFileName(None, "Open JSON File", "", "JSON Files (*.json)")
     if file_path:
         progress_dialog = QProgressDialog("Loading Data...", None, 0, 0)
@@ -106,31 +112,43 @@ def load_json_file():
         progress_dialog.show()
 
         # Creating a thread to handle data loading
-        thread = threading.Thread(target=lambda: load_json_data(file_path, progress_dialog))
+        thread = threading.Thread(target=lambda: load_json_data(file_path, progress_dialog, main_window))
         thread.start()
 
-
-def load_json_data(file_path, progress_dialog):
+def load_json_data(file_path, progress_dialog, main_window):
     try:
         with open(file_path, 'r', encoding='utf-8') as file:
             data = json.load(file)
-            parse_json(data)
-            # Update UI in the main thread
-            progress_dialog.finished.connect(lambda: show_success_and_cleanup(progress_dialog))
-            progress_dialog.setValue(1)  # Set value to indicate completion
+            parse_json(data)  # 確保這一步正確地更新了資料庫
+            print('有進來')
+            # 關閉進度對話框並顯示成功消息
+            QMetaObject.invokeMethod(progress_dialog, "close", Qt.QueuedConnection)
+            QMetaObject.invokeMethod(main_window, "show_success_and_cleanup", Qt.QueuedConnection)
+            load_initial_data()
+
+
     except json.JSONDecodeError:
-        progress_dialog.finished.connect(lambda: show_error_and_cleanup("Failed to decode JSON file. Please check the file format."))
+        QMetaObject.invokeMethod(progress_dialog, "close", Qt.QueuedConnection)
+        QMetaObject.invokeMethod(main_window, "show_error_and_cleanup", Qt.QueuedConnection, 
+                                 "無法解碼 JSON 檔案。請檢查檔案格式。")
     except sqlite3.Error as e:
-        progress_dialog.finished.connect(lambda: show_error_and_cleanup(f"Database error: {e}"))
+        QMetaObject.invokeMethod(progress_dialog, "close", Qt.QueuedConnection)
+        QMetaObject.invokeMethod(main_window, "show_error_and_cleanup", Qt.QueuedConnection, 
+                                 f"資料庫錯誤: {e}")
     except Exception as e:
-        progress_dialog.finished.connect(lambda: show_error_and_cleanup(f"Failed to load JSON file: {e}"))
+        QMetaObject.invokeMethod(progress_dialog, "close", Qt.QueuedConnection)
+        QMetaObject.invokeMethod(main_window, "show_error_and_cleanup", Qt.QueuedConnection, 
+                                 f"無法加載 JSON 檔案: {e}")
+
+
 
 
 def show_success_and_cleanup(progress_dialog):
     progress_dialog.close()
     QMessageBox.information(None, "Success", "Data has been successfully loaded from JSON!")
+    
+    # Reload the initial data to update the tables
     load_initial_data()
-
 
 def show_error_and_cleanup(error_message):
     QMessageBox.critical(None, "Error", error_message)
